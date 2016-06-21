@@ -2,4 +2,86 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- baseline grids -->
+    <dimen name="baseline_component_align_grid">8dp</dimen>
+    <dimen name="baseline_iconography_align_grid">4dp</dimen>
+
+    <!--example of typography-->
+    <dimen name="typography_height_big">40dp</dimen>
+    <dimen name="typography_height_medium">40dp</dimen>
+
+    <dimen name="typography_type_title">45sp</dimen>
+    <dimen name="typography_leading_title">48pt</dimen>
+
+    <dimen name="typography_type_big">34sp</dimen>
+    <dimen name="typography_leading_big">40pt</dimen>
+
+    <dimen name="typography_type_medium">24sp</dimen>
+    <dimen name="typography_leading_medium">32pt</dimen>
+
+    <dimen name="typography_type_regular2_device">16sp</dimen>
+    <dimen name="typography_type_regular2_pc">15sp</dimen>
+    <dimen name="typography_leading_regular2">28pt</dimen>
+
+    <dimen name="typography_type_regular_device">16sp</dimen>
+    <dimen name="typography_type_regular_pc">15sp</dimen>
+    <dimen name="typography_leading_regular">24pt</dimen>
+
+    <dimen name="typography_type_caption_device">14sp</dimen>
+    <dimen name="typography_type_caption_pc">13sp</dimen>
+    <dimen name="typography_leading_caption">24pt</dimen>
+
+    <dimen name="typography_type_small_device">14sp</dimen>
+    <dimen name="typography_type_small_pc">13sp</dimen>
+    <dimen name="typography_leading_small">20pt</dimen>
+
+    <!-- mobile.-->
+    <dimen name="mobile_screen_edge_left_and_right_margins">16dp</dimen>
+    <dimen name="mobile_content_associated_with_an_icon_or_avatar_left_margin">72dp</dimen>
+    <dimen name="mobile_horizontal_margins_on_mobile">16dp</dimen>
+    <dimen name="mobile_status_bar">24dp</dimen>
+    <dimen name="mobile_toolbar">56dp</dimen>
+    <dimen name="mobile_subtitle">48dp</dimen>
+    <dimen name="mobile_list_item">72dp</dimen>
+    <dimen name="mobile_view_content_left_margin_from_screen_edge">72dp</dimen>
+    <dimen name="mobile_title_and_list_items">72dp</dimen>
+    <dimen name="mobile_view_space_between_content_areas">8dp</dimen>
+
+    <dimen name="mobile_content_left_margin_from_screen_edge">72dp</dimen>
+
+    <dimen name="mobile_account_menu_and_list_items">48dp</dimen>
+    <dimen name="mobile_navigation_right_margin">56dp</dimen>
+
+
+    <!--List with detail view. Left-aligned list with a right-aligned floating action button -->
+    <dimen name="screen_edge_left_and_right_margins_ldw_rf">24dp</dimen>
+    <dimen name="content_left_margin_from_screen_edge_ldw_rf">80dp</dimen>
+    <dimen name="card_left_and_right_padding_ldw_rf">24dp</dimen>
+    <dimen name="card_content_left_padding_ldw_rf">104dp</dimen>
+    <dimen name="status_bar_and_space_above_list_ldw_rf">24dp</dimen>
+    <dimen name="list_item_ldw_rf">64dp</dimen>
+    <dimen name="space_between_content_areas_ldw_rf">8dp</dimen>
+    <dimen name="list_item_ldw_rf_right">72dp</dimen>
+
+    <!-- List with detail view. Left-aligned list with a left-aligned floating action button -->
+    <dimen name="screen_edge_left_and_right_padding_ldw_l">24dp</dimen>
+    <dimen name="icons_vertical_center_distance_from_screen_edge_ldw_l">52dp</dimen>
+    <dimen name="nav_item_left_padding_from_screen_edge_ldw_l">104dp</dimen>
+    <dimen name="content_left_margin_from_screen_edge_ldw_l">80dp</dimen>
+    <dimen name="card_left_and_right_padding_ldw_l">32dp</dimen>
+    <dimen name="card_nav_item_left_padding_ldw_l">96dp</dimen>
+    <dimen name="status_bar_size_ldw_l">24dp</dimen>
+    <dimen name="toolbar_and_list_item_ldw_l">64dp</dimen>
+    <dimen name="space_between_content_areas_ldw_l">8dp</dimen>
+    <dimen name="subtitle_list_item_and_slider_ldw_l">48dp</dimen>
+    <dimen name="title_size_ldw_l">80dp</dimen>
+
+    <!-- Touch target size. -->
+    <dimen name="avatar_size_tt">40dp</dimen>
+    <dimen name="icon_size_tt">20dp</dimen>
+    <dimen name="touch_target_on_both_size_tt">48dp</dimen>
+    <dimen name="touch_target_height_tt">48dp</dimen>
+    <dimen name="button_height_tt">36dp</dimen>
+
 </resources>
