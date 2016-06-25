@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">DevIntensive</string>
+    <string name="app_name">Герасимов Виталий</string>
+
+    <string name="hint_rating">5\nРейтинг</string>
+    <string name="hint_code_count">25000\nНаписано строк кода</string>
+    <string name="hint_project_count">5\nПроектов</string>
+
+    <string name="hint_phone">Мобильный</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_github">Репозиторий</string>
+    <string name="hint_vk">Профиль в VK</string>
+    <string name="hint_about_me">О себе</string>
+    <string name="text_phone">+7(908)720-92-70</string>
+    <string name="text_email">gervit2008@mail.ru</string>
+    <string name="text_github">github.com/gervit1989/DevIntensive</string>
+    <string name="text_vk">vk.com/gervit</string>
+    <string name="text_about_me">Введите информацию о себе. Напишите свои интересы, хобби,
+        принципы жизни\n Труляля\n и Траляля\n из Зазеркалья\n и многих \n других чудесных \n владений</string>
 </resources>
