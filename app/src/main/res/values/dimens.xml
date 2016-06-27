@@ -2,7 +2,12 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
+    
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_left">16dp</dimen>
+    <dimen name="icon_right">32dp</dimen>
+    <dimen name="icon_top">24dp</dimen>
+    
     <!-- Spaces  -->
     <dimen name="spacing_small_8">8dp</dimen>
     <dimen name="spacing_normal_16">16dp</dimen>
@@ -49,6 +54,8 @@
     <dimen name="typography_type_small_pc">13sp</dimen>
     <dimen name="typography_leading_small">20pt</dimen>
 
+
+    <dimen name="mobile_caption">120dp</dimen>
     <!-- mobile.-->
     <dimen name="mobile_screen_edge_left_and_right_margins">16dp</dimen>
     <dimen name="mobile_content_associated_with_an_icon_or_avatar_left_margin">72dp</dimen>
@@ -96,5 +103,9 @@
     <dimen name="touch_target_on_both_size_tt">48dp</dimen>
     <dimen name="touch_target_height_tt">48dp</dimen>
     <dimen name="button_height_tt">36dp</dimen>
+    <dimen name="line_height_36">36dp</dimen>
+    <dimen name="line_width_1">1dp</dimen>
+    <dimen name="margin_32">32pt</dimen>
+    <dimen name="margin_16">16pt</dimen>
 
 </resources>
