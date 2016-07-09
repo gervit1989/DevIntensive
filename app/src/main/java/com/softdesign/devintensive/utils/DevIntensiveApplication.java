@@ -7,10 +7,20 @@ import android.preference.PreferenceManager;
 /**
  * Created by mvideo on 28.06.2016.
  */
+
+/**
+ * Переопределение приложения
+ */
 public class DevIntensiveApplication extends Application {
 
+    /**
+     * Доступ к пользовательским значениям
+     */
     public static SharedPreferences sSharedPreferences;
 
+    /**
+     * При создании
+     */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -18,6 +28,10 @@ public class DevIntensiveApplication extends Application {
 
     }
 
+    /**
+     * Геттер для пользовательских значений
+     * @return
+     */
     public static SharedPreferences getSharedPreferences() {
         return sSharedPreferences;
     }

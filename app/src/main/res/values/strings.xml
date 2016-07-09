@@ -16,4 +16,9 @@
     <string name="text_vk">vk.com/gervit</string>
     <string name="text_about_me">Введите информацию о себе. Напишите свои интересы, хобби,
         принципы жизни\n Труляля\n и Траляля\n из Зазеркалья\n и многих \n других чудесных \n владений</string>
+    <string name="change_profile_photo_caption">Изменить фото профиля</string>
+    <string name="load_photo_menu_cancel">Отмена</string>
+    <string name="load_photo_menu_gallery">Загрузить из галереи</string>
+    <string name="load_photo_menu_camera">Сделать снимок</string>
+    <string name="profile_photo_gallery_caption">Выберите фото</string>
 </resources>
