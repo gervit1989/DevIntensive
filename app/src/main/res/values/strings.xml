@@ -21,4 +21,6 @@
     <string name="load_photo_menu_gallery">Загрузить из галереи</string>
     <string name="load_photo_menu_camera">Сделать снимок</string>
     <string name="profile_photo_gallery_caption">Выберите фото</string>
+    <string name="txt_mailto">mailto:</string>
+    <string name="txt_https">https://</string>
 </resources>

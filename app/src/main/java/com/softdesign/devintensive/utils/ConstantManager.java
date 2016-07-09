@@ -37,9 +37,37 @@ public interface ConstantManager {
     String USER_PROFILE_PHOTO_KEY ="USER_PROFILE_PHOTO_KEY";
 
     /**
-     *
+     *Ключ для проверки разрешений на Android 6
      */
     int REQUEST_APP_SETTINGS = 111;
 
-    int CAMERA_REQUEST_PERMISSION_CODE=122;
+    /**
+     * Ключ на запрос разрешений вручную
+     */
+    int REQUEST_PERMISSION_CODE =122;
+
+    /**
+     * Интенты на действия
+     */
+
+    /**
+     *  Звонок 1
+     */
+    int REQUEST_CALL_CODE  = 101;
+
+    /**
+     * Просмотр ВК
+     */
+    int REQUEST_VK_CODE  = 103;
+
+    /**
+     * Просмотр ГитХаб
+     */
+    int REQUEST_GIT_CODE  = 105;
+
+    /**
+     * Послать письмо
+     */
+    int REQUEST_EMAIL_CODE  = 107;
+
 }

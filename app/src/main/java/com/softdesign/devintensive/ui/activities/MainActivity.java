@@ -1,5 +1,6 @@
 package com.softdesign.devintensive.ui.activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,7 +46,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.jar.Manifest;
 
 /**
  * Главная активити
@@ -69,6 +69,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private AppBarLayout mAppBarLayout;
     private ImageView mPlaceholderImage;
+
+    private ImageView mIntentImagePhoneCall1;
+    private ImageView mIntentImagePhoneCall2;
+    private ImageView mIntentImageSendEMail;
+    private ImageView mIntentImageShowVK;
+    private ImageView mIntentImageShowGit;
     /**
      * Режим редактирования
      */
@@ -135,6 +141,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mUserBio = (EditText) findViewById(R.id.edit_me);
         mPlaceholderImage = (ImageView) findViewById(R.id.user_foto);
 
+        mIntentImagePhoneCall1 = (ImageView) findViewById(R.id.phone_call1);
+        mIntentImagePhoneCall2 = (ImageView) findViewById(R.id.phone_call2);
+        mIntentImageSendEMail = (ImageView) findViewById(R.id.send_email);
+        mIntentImageShowVK = (ImageView) findViewById(R.id.show_vk_profile);
+        mIntentImageShowGit = (ImageView) findViewById(R.id.show_github_dir);
+
         /**
          * Поля ввода
          */
@@ -160,6 +172,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mFab.setOnClickListener(this);
         mProfilePlaceholderLayout.setOnClickListener(this);
 
+        mIntentImagePhoneCall1.setOnClickListener(this);
+        mIntentImagePhoneCall2.setOnClickListener(this);
+        mIntentImageSendEMail.setOnClickListener(this);
+        mIntentImageShowVK.setOnClickListener(this);
+        mIntentImageShowGit.setOnClickListener(this);
         /**
          * Запуск приложения
          */
@@ -168,9 +185,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             List<String> userData = mDataManager.getPreferencesManager().loadUserData();
             for (int i = 0; i < userData.size(); i++) {
                 String s = userData.get(i);
-                if (s.equals("null")){
-                    switch (i)
-                    {
+                if (s.equals("null")) {
+                    switch (i) {
                         case 0:
                             mUserInfoViews.get(i).setText(R.string.text_phone);
                             break;
@@ -242,10 +258,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Log.d(TAG, "onRestart");
     }
 
+    /**
+     * Обработка нажатий
+     * @param v - Объект нажатия
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.call_progress: {
+            /*case R.id.call_progress: {
                 showProgress();
                 //runWithDelay();
                 break;
@@ -253,7 +273,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.hide_progress: {
                 //hideProgress();
                 break;
-            }
+            }*/
+            case R.id.phone_call1:
+                loadCall();
+                break;
+            case R.id.phone_call2:
+                loadCall();
+                break;
+            case R.id.send_email:
+                sendEmail();
+                break;
+            case R.id.show_vk_profile:
+                loadVkProfile();
+                break;
+            case R.id.show_github_dir:
+                loadGitHub();
+                break;
             case R.id.profile_placeholder:
                 showDialog(ConstantManager.LOAD_PROFILE_PHOTO);
 
@@ -280,16 +315,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        switch (requestCode){
+        switch (requestCode) {
             case ConstantManager.REQUEST_CAMERA_PHOTO:
-                if (resultCode == RESULT_OK && mPhotoFile !=null){
+                if (resultCode == RESULT_OK && mPhotoFile != null) {
                     mSelectedImage = Uri.fromFile(mPhotoFile);
 
                     insertProfileImage(mSelectedImage);
                 }
                 break;
             case ConstantManager.REQUEST_GALLERY_PHOTO:
-                if (resultCode == RESULT_OK && data !=null){
+                if (resultCode == RESULT_OK && data != null) {
                     mSelectedImage = data.getData();
 
                     insertProfileImage(mSelectedImage);
@@ -363,16 +398,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * Установка нового тулбара взамен стандартного
      */
-    private  void setupToolbar() {
+    private void setupToolbar() {
         mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
-		ActionBar actionBar =  getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
 
         /**
          * Параметры AppBarLayout, для последующего изменения скроллинга
          */
         mAppBarLayoutParams = (AppBarLayout.LayoutParams) mCollapsingToolbarLayout.getLayoutParams();
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -408,11 +443,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * Загрузка фото из камеры
      */
-    private void loadPhotoFromCamera(){
+    private void loadPhotoFromCamera() {
         //- Проверяем разрешение на доступ к камере
-        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)*/
-                {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        {
             //- Интент камеры
             Intent takeCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -425,7 +460,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 showSnackBar("Картинка не найдена");
             }
             //- Проверяем файл картинки
-            if (mPhotoFile != null){
+            if (mPhotoFile != null) {
                 //-  Передать фото дальше
                 takeCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhotoFile));
 
@@ -433,22 +468,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivityForResult(takeCaptureIntent, ConstantManager.REQUEST_CAMERA_PHOTO);
             }
         }
-        /*else {
+        else {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.CAMERA,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
-            }, ConstantManager.CAMERA_REQUEST_PERMISSION_CODE);
-        }*/
+            }, ConstantManager.REQUEST_PERMISSION_CODE);
+        }
+        Snackbar.make(mCoordinatorLayout, "Для корректной работы приложения необходимо дать требуемые разрешения", Snackbar.LENGTH_LONG)
+                .setAction("Разоешить", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openApplicationSetings();
+                    }
+                });
     }
-/**
- +     * Проверка разрешений
- +     * @param requestCode
- +     * @param permissions
- +     * @param grantResults
- +     */
+
+    /**
+     +     * Проверка разрешений
+     +     * @param requestCode
+     +     * @param permissions
+     +     * @param grantResults
+     +     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == ConstantManager.CAMERA_REQUEST_PERMISSION_CODE && grantResults.length == 2) {
+        if (requestCode == ConstantManager.REQUEST_PERMISSION_CODE && grantResults.length == 2) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             }
         }
@@ -458,10 +501,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
     }
+
     /**
      * Загрузка фото из галереи
      */
-    private void loadPhotoFromGallery(){
+    private void loadPhotoFromGallery() {
         //- Интент галереи
         Intent takeGalleryPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
@@ -475,7 +519,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * Скрыть элемент редактированя фото профиля за фото
      */
-    private void hideProfilePlaceholder(){
+    private void hideProfilePlaceholder() {
         mProfilePlaceholderLayout.setVisibility(View.GONE);
 
     }
@@ -483,14 +527,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * показывать элемент редактированя фото профиля
      */
-    private void showProfilePlaceholder(){
+    private void showProfilePlaceholder() {
         mProfilePlaceholderLayout.setVisibility(View.VISIBLE);
     }
 
     /**
      * Заблокировать верхний тулбар от сворачивания
      */
-    private void lockToolbar(){
+    private void lockToolbar() {
 
         /**
          * При переходе в режим редактирования разворот происходит с анимацией
@@ -510,7 +554,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * Разблокировать верхний тулбар
      */
-    private void unlockToolar(){
+    private void unlockToolar() {
         /**
          * Включаем скролл  обратно
          */
@@ -530,8 +574,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     @Override
     protected Dialog onCreateDialog(int id) {
-        switch (id)
-        {
+        switch (id) {
             case ConstantManager.LOAD_PROFILE_PHOTO: {
 
                 /**
@@ -583,8 +626,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * @return изображение
      * @throws IOException
      */
-    private File createPhotoImageFile() throws IOException{
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format( new Date());
+    private File createPhotoImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String FileImageName = "JPEG_" + timeStamp + "_";
 
         // Где лежать будет файл
@@ -610,18 +653,65 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * Проверка разрешений на доступ
      */
-    public void openApplicationSetings(){
+    public void openApplicationSetings() {
 
         /**
          * Интент на доступ к разрешениям программы
          */
-        Intent appSettingsIntent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:"+getPackageName()));
+        Intent appSettingsIntent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
 
         /**
          * Запрашиваем ответ на запрос доступа к разрешениям
          */
         startActivityForResult(appSettingsIntent, ConstantManager.REQUEST_APP_SETTINGS);
 
+    }
+
+    /**
+     * Загрузка ВК профиля
+     */
+    private void loadVkProfile() {
+        String sVkProfile = mUserInfoViews.get(2).getText().toString();
+        Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.txt_https) + sVkProfile));
+        startActivity(browseIntent);
+    }
+
+    /**
+     * Загрузка Github
+     */
+    private void loadGitHub() {
+        String sGitHubDir = mUserInfoViews.get(3).getText().toString();
+        Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.txt_https) + sGitHubDir));
+        startActivity(browseIntent);
+    }
+
+    /**
+     * Отправка письма
+     */
+    private void sendEmail() {
+        String sEmail = mUserInfoViews.get(1).getText().toString();
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + sEmail));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
+    }
+
+    /**
+     *  Звонок
+     */
+    private void loadCall() {
+        String sPhone = mUserInfoViews.get(0).getText().toString();
+        Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + sPhone));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        startActivity(dialIntent);
     }
 
 }
