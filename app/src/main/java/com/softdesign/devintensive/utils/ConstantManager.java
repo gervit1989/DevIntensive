@@ -70,4 +70,10 @@ public interface ConstantManager {
      */
     int REQUEST_EMAIL_CODE  = 107;
 
+    /**
+     * Регистрационная информация
+     */
+    String REG_USER_LOGIN_KEY="USER_LOGIN";
+    String REG_USER_PASS_KEY="USER_PASS";
+
 }

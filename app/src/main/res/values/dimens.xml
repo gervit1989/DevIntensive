@@ -114,4 +114,9 @@
     <dimen name="placholder_image">90dp</dimen>
     <dimen name="placeholder_bottom_margin">56dp</dimen>
 
+    <dimen name="font_size_small_12">12sp</dimen>
+    <dimen name="font_size_medial_14">14sp</dimen>
+    <dimen name="font_size_medium_16">16sp</dimen>
+    <dimen name="font_size_large_20">20sp</dimen>
+
 </resources>
