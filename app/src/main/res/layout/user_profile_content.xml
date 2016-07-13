@@ -24,22 +24,47 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:divider="?android:dividerHorizontal"
-            android:showDividers="middle">
-            <TextView
-                style="@style/text.title"
-                android:id="@+id/txt_cap1"
-                android:text="@string/hint_rating"
-                android:layout_weight="1"/>
-            <TextView
-                style="@style/text.title"
-                android:id="@+id/cap2"
-                android:text="@string/hint_code_count"
-                android:layout_weight="3"/>
-            <TextView
-                style="@style/text.title"
-                android:id="@+id/txt_cap3"
-                android:text="@string/hint_project_count"
-                android:layout_weight="1"/>
+            android:showDividers="middle"
+            android:orientation="horizontal"
+            android:background="@color/gray">
+            <LinearLayout
+                style="@style/profile_header"
+                android:layout_weight="1">
+                 <TextView
+                     style="@style/profile_header_text.value"
+                    android:id="@+id/txt_cap1"
+                    android:text="5"/>
+                <TextView
+                    style="@style/profile_header_text.hint"
+                    android:text="@string/hint_rating"
+                    />
+                </LinearLayout>
+            <View style="@style/profile_header_divider" />
+            <LinearLayout
+                style="@style/profile_header"
+                android:layout_weight="3">
+                <TextView
+                    style="@style/profile_header_text.value"
+                    android:id="@+id/txt_cap2"
+                    android:text="5"/>
+                <TextView
+                    style="@style/profile_header_text.hint"
+                    android:text="@string/hint_code_count"
+                    android:layout_weight="3"/>
+            </LinearLayout>
+            <View style="@style/profile_header_divider" />
+            <LinearLayout
+                style="@style/profile_header"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/profile_header_text.value"
+                    android:id="@+id/txt_cap3"
+                    android:text="5"/>
+                <TextView
+                    style="@style/profile_header_text.hint"
+                    android:text="@string/hint_project_count"
+                    android:layout_weight="1"/>
+            </LinearLayout>
         </LinearLayout>
         <TextView
             style="@style/text.title"

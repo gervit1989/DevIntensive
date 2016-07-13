@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Герасимов Виталий</string>
 
-    <string name="hint_rating">5\nРейтинг</string>
-    <string name="hint_code_count">25000\nНаписано строк кода</string>
-    <string name="hint_project_count">5\nПроектов</string>
+    <string name="hint_rating">Рейтинг</string>
+    <string name="hint_code_count">Написано строк кода</string>
+    <string name="hint_project_count">Проектов</string>
 
     <string name="hint_phone">Мобильный</string>
     <string name="hint_email">E-mail</string>

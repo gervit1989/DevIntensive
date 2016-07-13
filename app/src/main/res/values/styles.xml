@@ -23,6 +23,12 @@
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 
+    <style name="profile_header_divider">
+        <item name="android:layout_width">@dimen/line_size_2</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/gray_light</item>
+    </style>
+
     <style name="text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:background">@color/gray</item>
@@ -31,9 +37,28 @@
         <item name="android:textSize">16sp</item>
         <item name="android:gravity">center</item>
     </style>
+    <!-- Profile Header Styles -->
+    <style name="profile_header">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="profile_header_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+    <style name="profile_header_text.value">
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="profile_header_text.hint">
+        <item name="android:textSize">14sp</item>
+    </style>
     
     <style name="text.title" parent="text">
-        <item name="android:layout_height">@dimen/caption_text</item>
         <item name="android:textStyle">bold</item>
 
     </style>
@@ -98,5 +123,20 @@
 
     </style>
 
+    <style name="AppTheme.Button.Red" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/color_accent</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
+    <!-- Auth activity Styles -->
+    <style name="auth_edit_text_hint" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/gray_light</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- Other styles -->
+
+
+    <dimen name="line_size_2">2dp</dimen>
 </resources>
+

@@ -24,6 +24,12 @@ public interface ConstantManager {
     String USER_GITHUB_KEY="USER_KEY_4";
     String USER_ABOUT_ME_KEY="USER_KEY_5";
 
+    String USER_PHONE_NET_KEY="USER_KEY_1_NET";
+    String USER_MAIL_NET_KEY="USER_KEY_2_NET";
+    String USER_PROFILE_NET_KEY="USER_KEY_3_NET";
+    String USER_GITHUB_NET_KEY="USER_KEY_4_NET";
+    String USER_ABOUT_ME_NET_KEY="USER_KEY_5_NET";
+
     /**
      * Ключ для меню выбора источника фото
      */
@@ -74,6 +80,19 @@ public interface ConstantManager {
      * Регистрационная информация
      */
     String REG_USER_LOGIN_KEY="USER_LOGIN";
+    String REG_USER_ID_KEY="USER_ID";
+    String REG_USER_LOGIN_TOKEN_KEY="USER_AUTH_LOGIN";
     String REG_USER_PASS_KEY="USER_PASS";
 
+
+    String USER_RATING_KEY="USER_RATING_KEY";
+    String USER_CODE_LINE_COUNT_KEY="USER_CODE_LINE_COUNT_KEY";
+    String USER_PROJECT_COUNT_KEY="USER_PROJECT_COUNT_KEY";
+
+
+    String USER_FIRST_NAME = "USER_FIRST_NAME";
+    String USER_SECOND_NAME = "USER_SECOND_NAME";
+
+    String USER_PHOTO_URL_KEY = "USER_PHOTO_URL_KEY";
+    String USER_AVATAR_URL_KEY = "USER_AVATAR_URL_KEY";
 }
