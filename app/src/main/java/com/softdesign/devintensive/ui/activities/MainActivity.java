@@ -33,6 +33,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
@@ -41,11 +42,17 @@ import com.softdesign.devintensive.utils.RoundedAvatarDrawable;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Главная активити
@@ -89,11 +96,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * Поля ввода информации
      */
     private EditText mUserPhone, mUserMail, mUserVk, mUserGit, mUserBio;
+    private TextView mUserRating, mUserCodeLine, mUserProjectCount;
 
     /**
      * Список всех полей ввода
      */
     private List<EditText> mUserInfoViews;
+    private List<TextView> mUserProfileInfoViews;
 
     /**
      * Параметры отображения верхнего AppBarLayout
@@ -147,6 +156,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mIntentImageShowVK = (ImageView) findViewById(R.id.show_vk_profile);
         mIntentImageShowGit = (ImageView) findViewById(R.id.show_github_dir);
 
+        mUserRating =(TextView)findViewById(R.id.txt_cap1);
+        mUserCodeLine =(TextView)findViewById(R.id.txt_cap2);
+        mUserProjectCount =(TextView)findViewById(R.id.txt_cap3);
+
         /**
          * Поля ввода
          */
@@ -157,15 +170,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mUserInfoViews.add(mUserGit);
         mUserInfoViews.add(mUserBio);
 
+        mUserProfileInfoViews = new  ArrayList<>();
+        mUserProfileInfoViews.add((TextView)findViewById(R.id.txt_cap1));
+        mUserProfileInfoViews.add((TextView)findViewById(R.id.txt_cap2));
+        mUserProfileInfoViews.add((TextView)findViewById(R.id.txt_cap3));
+
         /**
          * Отрисовка элементов верстки
          */
         setupToolbar();     //- Тулбар
         setupDrawer();      //- Выплывающее меню
         LoadUserInfo();     //- Загрузка пользовательской информации
+        loadUserInfoValue();
         makeRoundAvatar();  //- Скругление аватары
         insertProfileImage(mDataManager.getPreferencesManager().loadUserPhoto()); //- Загружаем сохраненное фото
-
+        initProfileImage();
+        initAvatarImage();
         /**
          * Обработка нажатий
          */
@@ -182,7 +202,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
          */
         if (savedInstanceState == null) {
 
-            List<String> userData = mDataManager.getPreferencesManager().loadUserData();
+            /*List<String> userData = mDataManager.getPreferencesManager().loadUserData();
             for (int i = 0; i < userData.size(); i++) {
                 String s = userData.get(i);
                 if (s.equals("null")) {
@@ -206,7 +226,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
                 }
 
-            }
+            }*/
             mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.white));
 //            активити запускается впервые
         } else {
@@ -361,7 +381,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 SaveUserInfo();
             }
             hideProfilePlaceholder();
-            unlockToolar();
+            unlockToolbar();
             mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.white));
 
         }
@@ -554,7 +574,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * Разблокировать верхний тулбар
      */
-    private void unlockToolar() {
+    private void unlockToolbar() {
         /**
          * Включаем скролл  обратно
          */
@@ -714,4 +734,120 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         startActivity(dialIntent);
     }
 
+
+    private void loadUserFields(){
+
+    }
+
+    private void saveUserFields(){
+
+    }
+    private void loadUserInfoValue(){
+        List<String> userData = mDataManager.getPreferencesManager().loadUserProfileFields();
+        for (int i = 0; i < userData.size(); i++) {
+            mUserProfileInfoViews.get(i).setText(userData.get(i));
+        }
+
+
+    }
+
+    /**
+     * Выполняет инициализацию фотографии в профиле пользователя.
+     * Загружает фотографию с сервера. В случае неудачи использует локальное изображение.
+     */
+    private void initProfileImage() {
+        String photoURL = getIntent().getStringExtra(ConstantManager.USER_PHOTO_URL_KEY);
+        final Uri photoLocalUri = mDataManager.getPreferencesManager().loadUserPhoto();
+
+        Picasso.with(MainActivity.this)
+                .load(photoLocalUri)
+                .placeholder(R.drawable.user_bg)
+                .into(mPlaceholderImage);
+
+        Call<ResponseBody> call = mDataManager.getImage(photoURL);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    if (bitmap != null) {
+                        mPlaceholderImage.setImageBitmap(bitmap);
+                        try {
+                            File file = createImageFileFromBitmap("user_photo", bitmap);
+                            if (file != null) {
+                                mDataManager.getPreferencesManager()
+                                        .saveUserPhoto(Uri.fromFile(file));
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                //showShackbar("Не удалось загрузить фотографию пользователя");
+            }
+        });
+    }
+    private void initAvatarImage() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigator);
+        user_avatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
+        String photoURL = getIntent().getStringExtra(ConstantManager.USER_AVATAR_URL_KEY);
+        final Uri photoLocalUri = mDataManager.getPreferencesManager().loadUserAvatar();
+
+        Picasso.with(MainActivity.this)
+                .load(photoLocalUri)
+                .placeholder(R.drawable.profile)
+                .into(user_avatar);
+
+        Call<ResponseBody> call = mDataManager.getImage(photoURL);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    if (bitmap != null) {
+
+                        RoundedAvatarDrawable bt = new RoundedAvatarDrawable(bitmap);
+                        user_avatar.setImageBitmap(bitmap);
+                        try {
+                            File file = createImageFileFromBitmap("user_avatar", bitmap);
+                            if (file != null) {
+                                mDataManager.getPreferencesManager()
+                                        .saveUserAvatar(Uri.fromFile(file));
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                //showShackbar("Не удалось загрузить фотографию пользователя");
+            }
+        });
+    }
+
+    private File createImageFileFromBitmap(String imageFileName, Bitmap bitmap) throws IOException {
+
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File imageFile = null;
+        try {
+            imageFile = new File(storageDir, imageFileName + ".jpg");
+
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imageFile;
+    }
 }
