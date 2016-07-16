@@ -28,6 +28,14 @@
         <activity android:name=".ui.activities.MainActivity"
                   android:label="@string/app_name">
         </activity>
+        <activity android:name=".ui.activities.UserListActivity">
+        </activity>
+        <activity android:name=".ui.activities.ProfileUserActivity"
+            android:parentActivityName=".ui.activities.UserListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.UserListActivity"/>
+        </activity>
     </application>
 
 </manifest>

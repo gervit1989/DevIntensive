@@ -762,8 +762,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         for (int i = 0; i < userData.size(); i++) {
             mUserProfileInfoViews.get(i).setText(userData.get(i));
         }
-
-
     }
 
     /**

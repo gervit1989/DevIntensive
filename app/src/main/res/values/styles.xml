@@ -133,6 +133,48 @@
         <item name="android:textColor">@color/gray_light</item>
         <item name="android:textSize">12sp</item>
     </style>
+    <!-- ToolBar -->
+
+    <style name="ToolBarStyle" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@color/color_white</item>
+        <item name="android:textColorSecondary">@color/color_white</item>
+        <item name="android:actionMenuTextColor">@color/color_white</item>
+    </style>
+
+    <style name="edit_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:enabled">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:textColor">@color/color_black</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:gravity">bottom</item>
+    </style>
+
+    <style name="user_info_row">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/spacing_small_8</item>
+        <item name="android:layout_marginTop">@dimen/spacing_small_8</item>
+    </style>
+
+    <style name="layout_et">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:layout_height">@dimen/spacing_large_72</item>
+        <item name="android:layout_marginLeft">@dimen/spacing_medium_32</item>
+        <item name="android:layout_marginRight">@dimen/spacing_normal_16</item>
+    </style>
+
+    <style name="user_info_separator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">@dimen/spacing_large_72</item>
+        <item name="android:background">@color/gray_light</item>
+    </style>
 
     <!-- Other styles -->
 

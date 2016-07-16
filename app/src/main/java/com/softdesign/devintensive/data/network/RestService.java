@@ -1,5 +1,6 @@
 package com.softdesign.devintensive.data.network;
 
+import com.softdesign.devintensive.data.network.res.UserListResponse;
 import com.softdesign.devintensive.data.network.res.UserModelResponse;
 import com.softdesign.devintensive.data.network.req.UserLoginRequest;
 
@@ -34,5 +35,8 @@ public interface RestService {
 
     @GET
     Call<ResponseBody> getImage(@Url String url);
+	
+    @GET("user/list?orderBy=rating")
+    Call<UserListResponse> getUserList();
 
 }
