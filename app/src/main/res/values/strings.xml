@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Герасимов Виталий</string>
 
-    <string name="hint_rating">5\nРейтинг</string>
-    <string name="hint_code_count">25000\nНаписано строк кода</string>
-    <string name="hint_project_count">5\nПроектов</string>
+    <string name="hint_rating">Рейтинг</string>
+    <string name="hint_code_count">Написано строк кода</string>
+    <string name="hint_project_count">Проектов</string>
 
     <string name="hint_phone">Мобильный</string>
     <string name="hint_email">E-mail</string>
@@ -16,4 +16,14 @@
     <string name="text_vk">vk.com/gervit</string>
     <string name="text_about_me">Введите информацию о себе. Напишите свои интересы, хобби,
         принципы жизни\n Труляля\n и Траляля\n из Зазеркалья\n и многих \n других чудесных \n владений</string>
+    <string name="change_profile_photo_caption">Изменить фото профиля</string>
+    <string name="load_photo_menu_cancel">Отмена</string>
+    <string name="load_photo_menu_gallery">Загрузить из галереи</string>
+    <string name="load_photo_menu_camera">Сделать снимок</string>
+    <string name="profile_photo_gallery_caption">Выберите фото</string>
+    <string name="txt_mailto">mailto:</string>
+    <string name="txt_https">https://</string>
+    <string name="hint_password">Пароль</string>
+    <string name="text_login">ВОЙТИ</string>
+    <string name="remind_pass">Забыли пароль?</string>
 </resources>
