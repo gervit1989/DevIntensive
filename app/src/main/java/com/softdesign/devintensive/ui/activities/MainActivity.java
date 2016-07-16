@@ -185,7 +185,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         insertProfileImage(mDataManager.getPreferencesManager().loadUserPhoto()); //- Загружаем сохраненное фото
         initProfileImage();
         initAvatarImage();
-        makeRoundAvatar();  //- Скругление аватары
+        //makeRoundAvatar();  //- Скругление аватары
         /**
          * Обработка нажатий
          */
@@ -464,6 +464,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigator);
         user_avatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
         Bitmap btMap = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
+
+        RoundedAvatarDrawable bt = new RoundedAvatarDrawable(btMap);
+        user_avatar.setImageDrawable(bt);
+    }
+    private void makeRoundAvatarFromBitmap(Bitmap btMap) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigator);
+        user_avatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
         RoundedAvatarDrawable bt = new RoundedAvatarDrawable(btMap);
         user_avatar.setImageDrawable(bt);
     }
@@ -806,11 +813,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         String photoURL = getIntent().getStringExtra(ConstantManager.USER_AVATAR_URL_KEY);
         final Uri photoLocalUri = mDataManager.getPreferencesManager().loadUserAvatar();
 
-        Picasso.with(MainActivity.this)
-                .load(photoLocalUri)
-                .placeholder(R.drawable.profile)
-                .into(user_avatar);
-
         Call<ResponseBody> call = mDataManager.getImage(photoURL);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -819,8 +821,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                     if (bitmap != null) {
 
-                        RoundedAvatarDrawable bt = new RoundedAvatarDrawable(bitmap);
-                        user_avatar.setImageBitmap(bitmap);
+                        makeRoundAvatarFromBitmap(bitmap);
                         try {
                             File file = createImageFileFromBitmap("user_avatar", bitmap);
                             if (file != null) {
@@ -858,4 +859,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         return imageFile;
     }
+
 }
