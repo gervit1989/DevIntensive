@@ -37,11 +37,11 @@ public class ProfileUserActivity extends BaseActivity {
         setContentView(R.layout.activity_profile_user);
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        mProfileImage = (ImageView) findViewById(R.id.user_photo_img);
+        //mProfileImage = (ImageView) findViewById(R.id.user_photo_img);
         mUserBio = (EditText) findViewById(R.id.about_self_et);
-        mUserRating = (TextView) findViewById(R.id.rating_txt);
-        /*mUserCodeLines = (TextView) findViewById(R.id.coded_lines_value);
-        mUserProjects = (TextView) findViewById(R.id.projects_value);*/
+        //mUserRating = (TextView) findViewById(R.id.rating_txt1);
+        //mUserCodeLines = (TextView) findViewById(R.id.code_lines_txt1);
+        //mUserProjects = (TextView) findViewById(R.id.projects_txt1);
         mCollapsingToolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_coordinator_container);
 
@@ -73,13 +73,19 @@ public class ProfileUserActivity extends BaseActivity {
                    // TODO: 15.07.2016 Реализовать просмотр репозитория по Intent.ACTION_VIEW
                }
            });*/
-
+          /* Picasso.with(this)
+                   .load(userDTO.getPhoto())
+                   .placeholder(R.drawable.user_bg)
+                   .error(R.drawable.user_bg)
+                   .into(mProfileImage);*/
            mUserBio.setText(userDTO.getBio());
-           mUserRating.setText(userDTO.getRating());
+           showToast(userDTO.getRating());
+           //mUserRating.setText(userDTO.getRating());
            //mUserCodeLines.setText(userDTO.getCodeLines());
            //mUserProjects.setText(userDTO.getProjects());
 
-           mCollapsingToolBarLayout.setTitle(userDTO.getFullName());
+           //showToast(userDTO.getFullName());
+           //mCollapsingToolBarLayout.setTitle(userDTO.getFullName());
 
            /*Picasso.with(this)
                    .load(userDTO.getPhoto())

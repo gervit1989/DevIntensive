@@ -127,8 +127,8 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
         saveUserData(userModel);
         saveUserName(userModel);
 
-        Intent loginIntent = new Intent(this, MainActivity.class);
-        //Intent loginIntent = new Intent(this, UserListActivity.class);
+        //Intent loginIntent = new Intent(this, MainActivity.class);
+        Intent loginIntent = new Intent(this, UserListActivity.class);
         loginIntent.putExtra(ConstantManager.USER_PHOTO_URL_KEY,
                 userModel.getData().getUser().getPublicInfo().getPhoto());
         loginIntent.putExtra(ConstantManager.USER_AVATAR_URL_KEY,
