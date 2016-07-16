@@ -26,6 +26,8 @@
     <style name="profile_header_divider">
         <item name="android:layout_width">@dimen/line_size_2</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">7dp</item>
+        <item name="android:layout_marginBottom">7dp</item>
         <item name="android:background">@color/gray_light</item>
     </style>
 
@@ -49,7 +51,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
     <style name="profile_header_text.value">
         <item name="android:textSize">24sp</item>

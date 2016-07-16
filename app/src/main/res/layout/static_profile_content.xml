@@ -8,7 +8,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/gray_light">
 
         <LinearLayout
             style="@style/user_info_row">
@@ -47,6 +48,7 @@
                     <EditText
                         android:id="@+id/about_self_et"
                         style="@style/edit_text"
+                        android:maxLines="3"
                         android:hint="@string/hint_about_me"
                         android:inputType="textMultiLine"
                         android:text="@string/text_about_me"

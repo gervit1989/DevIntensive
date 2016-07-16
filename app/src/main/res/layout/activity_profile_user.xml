@@ -20,7 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="@color/gray"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:visibility="visible"
+            android:transitionGroup="false">
 
 
                 <ImageView
@@ -32,7 +34,109 @@
                     android:fitsSystemWindows="true"/>
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.softdesign.devintensive.ui.views.AspectRatioImageView
+                        android:id="@+id/user_photo_img1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/user_bg"
+                        app:aspect_ratio="1.78" />
+
+                    <TextView
+                        android:id="@+id/user_full_name_txt1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:paddingBottom="@dimen/spacing_medial_24"
+                        android:paddingLeft="@dimen/spacing_normal_16"
+                        android:paddingRight="@dimen/spacing_normal_16"
+                        android:text="Фамилия Имя"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/font_size_large_20" />
+                </FrameLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@color/gray_background">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/rating_txt1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/font_size_large_20" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Рейтинг"
+                        android:textColor="@color/color_black"/>
+                </LinearLayout>
+                <View style="@style/profile_header_divider" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/code_lines_txt1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/font_size_large_20" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Написано строк кода"
+                        android:textAlignment="center"
+                        android:textColor="@color/color_black"/>
+                </LinearLayout>
+                <View style="@style/profile_header_divider" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/projects_txt1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/color_black"
+                        android:textSize="@dimen/font_size_large_20" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Проектов"
+                        android:textColor="@color/color_black"/>
+                </LinearLayout>
+                </LinearLayout>
+
+                <include layout="@layout/static_profile_content" />
+            </LinearLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -46,7 +150,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/static_profile_content" />
 
 
 </android.support.design.widget.CoordinatorLayout>

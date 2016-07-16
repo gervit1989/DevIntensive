@@ -25,6 +25,7 @@ public class ProfileUserActivity extends BaseActivity {
     private Toolbar mToolBar;
     private ImageView mProfileImage;
     private EditText mUserBio;
+    TextView mTextNameView;
     private TextView mUserRating, mUserCodeLines, mUserProjects;
     private CollapsingToolbarLayout mCollapsingToolBarLayout;
     private CoordinatorLayout mCoordinatorLayout;
@@ -37,14 +38,14 @@ public class ProfileUserActivity extends BaseActivity {
         setContentView(R.layout.activity_profile_user);
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        //mProfileImage = (ImageView) findViewById(R.id.user_photo_img);
+        mProfileImage = (ImageView) findViewById(R.id.user_photo_img1);
         mUserBio = (EditText) findViewById(R.id.about_self_et);
-        //mUserRating = (TextView) findViewById(R.id.rating_txt1);
-        //mUserCodeLines = (TextView) findViewById(R.id.code_lines_txt1);
-        //mUserProjects = (TextView) findViewById(R.id.projects_txt1);
+        mUserRating = (TextView) findViewById(R.id.rating_txt1);
+        mUserCodeLines = (TextView) findViewById(R.id.code_lines_txt1);
+        mUserProjects = (TextView) findViewById(R.id.projects_txt1);
         mCollapsingToolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_coordinator_container);
-
+        mTextNameView = (TextView)findViewById(R.id.user_full_name_txt1);
         mRepoListView = (ListView) findViewById(R.id.repository_list);
         setupToolBar();
         initProfileData();
@@ -62,8 +63,13 @@ public class ProfileUserActivity extends BaseActivity {
 
     private void initProfileData() {
        try {
+           //mCollapsingToolBarLayout.setExpandedTitleColor(getResources().getColor(Integer.parseInt("@android:color/transparent")));
+           mCollapsingToolBarLayout.setTitleEnabled(false);
+                   // mCollapsingToolBarLayout.setVisibility(View.GONE);
+                   //mCollapsingToolBarLayout.setTitle("");
            UserDTO userDTO = getIntent().getParcelableExtra(ConstantManager.PARCELABLE_KEY);
 
+           mTextNameView.setText(userDTO.getName() + " "+userDTO.getFamily());
            final List<String> repositories = userDTO.getRepositories();
            final RepositoriesAdapter repositoriesAdapter = new RepositoriesAdapter(this, repositories);
            mRepoListView.setAdapter(repositoriesAdapter);
@@ -79,19 +85,19 @@ public class ProfileUserActivity extends BaseActivity {
                    .error(R.drawable.user_bg)
                    .into(mProfileImage);*/
            mUserBio.setText(userDTO.getBio());
-           showToast(userDTO.getRating());
-           //mUserRating.setText(userDTO.getRating());
-           //mUserCodeLines.setText(userDTO.getCodeLines());
-           //mUserProjects.setText(userDTO.getProjects());
+           mUserRating.setText(userDTO.getRating());
+           mUserCodeLines.setText(userDTO.getCodeLines());
+           mUserProjects.setText(userDTO.getProjects());
+
 
            //showToast(userDTO.getFullName());
            //mCollapsingToolBarLayout.setTitle(userDTO.getFullName());
 
-           /*Picasso.with(this)
+           Picasso.with(this)
                    .load(userDTO.getPhoto())
                    .placeholder(R.drawable.user_bg)
-                   .error(R.drawable.user_bg)
-                   .into(mProfileImage);*/
+                   .error(R.drawable.profile)
+                   .into(mProfileImage);//*/
        }
        catch (NullPointerException e){
             showToast("Ошибочка!");

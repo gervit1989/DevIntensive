@@ -27,6 +27,15 @@ public class UserListResponse {
         @SerializedName("first_name")
         @Expose
         private String firstName;
+
+        public String getSecondName() {
+            return secondName;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
         @SerializedName("second_name")
         @Expose
         private String secondName;
