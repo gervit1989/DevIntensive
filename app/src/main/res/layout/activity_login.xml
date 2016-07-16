@@ -94,7 +94,6 @@
                 android:layout_marginLeft="@dimen/spacing_medium_48"
                 android:layout_marginRight="@dimen/spacing_medium_48"
                 android:layout_marginTop="@dimen/spacing_normal_16"
-                android:background="@drawable/rounded_corners"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:text="@string/text_login"

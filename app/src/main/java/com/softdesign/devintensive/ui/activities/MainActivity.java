@@ -182,10 +182,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setupDrawer();      //- Выплывающее меню
         LoadUserInfo();     //- Загрузка пользовательской информации
         loadUserInfoValue();
-        makeRoundAvatar();  //- Скругление аватары
         insertProfileImage(mDataManager.getPreferencesManager().loadUserPhoto()); //- Загружаем сохраненное фото
         initProfileImage();
         initAvatarImage();
+        makeRoundAvatar();  //- Скругление аватары
         /**
          * Обработка нажатий
          */
@@ -244,6 +244,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            mDrawer.openDrawer(GravityCompat.START);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -761,7 +769,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         Picasso.with(MainActivity.this)
                 .load(photoLocalUri)
-                .placeholder(R.drawable.user_bg)
+                .placeholder(R.drawable.user_data)
                 .into(mPlaceholderImage);
 
         Call<ResponseBody> call = mDataManager.getImage(photoURL);
