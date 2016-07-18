@@ -182,10 +182,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setupDrawer();      //- Выплывающее меню
         LoadUserInfo();     //- Загрузка пользовательской информации
         loadUserInfoValue();
-        makeRoundAvatar();  //- Скругление аватары
         insertProfileImage(mDataManager.getPreferencesManager().loadUserPhoto()); //- Загружаем сохраненное фото
         initProfileImage();
         initAvatarImage();
+        //makeRoundAvatar();  //- Скругление аватары
         /**
          * Обработка нажатий
          */
@@ -244,6 +244,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            mDrawer.openDrawer(GravityCompat.START);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -456,6 +464,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigator);
         user_avatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
         Bitmap btMap = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
+
+        RoundedAvatarDrawable bt = new RoundedAvatarDrawable(btMap);
+        user_avatar.setImageDrawable(bt);
+    }
+    private void makeRoundAvatarFromBitmap(Bitmap btMap) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigator);
+        user_avatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
         RoundedAvatarDrawable bt = new RoundedAvatarDrawable(btMap);
         user_avatar.setImageDrawable(bt);
     }
@@ -747,8 +762,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         for (int i = 0; i < userData.size(); i++) {
             mUserProfileInfoViews.get(i).setText(userData.get(i));
         }
-
-
     }
 
     /**
@@ -761,7 +774,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         Picasso.with(MainActivity.this)
                 .load(photoLocalUri)
-                .placeholder(R.drawable.user_bg)
+                .placeholder(R.drawable.user_data)
                 .into(mPlaceholderImage);
 
         Call<ResponseBody> call = mDataManager.getImage(photoURL);
@@ -798,11 +811,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         String photoURL = getIntent().getStringExtra(ConstantManager.USER_AVATAR_URL_KEY);
         final Uri photoLocalUri = mDataManager.getPreferencesManager().loadUserAvatar();
 
-        Picasso.with(MainActivity.this)
-                .load(photoLocalUri)
-                .placeholder(R.drawable.profile)
-                .into(user_avatar);
-
         Call<ResponseBody> call = mDataManager.getImage(photoURL);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -811,8 +819,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                     if (bitmap != null) {
 
-                        RoundedAvatarDrawable bt = new RoundedAvatarDrawable(bitmap);
-                        user_avatar.setImageBitmap(bitmap);
+                        makeRoundAvatarFromBitmap(bitmap);
                         try {
                             File file = createImageFileFromBitmap("user_avatar", bitmap);
                             if (file != null) {
@@ -850,4 +857,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         return imageFile;
     }
+
 }

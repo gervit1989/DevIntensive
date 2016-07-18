@@ -77,7 +77,7 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
         mDataManager = DataManager.getINSTANCE();
 
         //- Инициалзация кнопки
-        mButtonLogin = (Button)findViewById(R.id.login_btn);
+        mButtonLogin = (Button)findViewById(R.id.login_login_button);
         mLoginEdit = (EditText) findViewById(R.id.login_edit);
         mPassEdit = (EditText)findViewById(R.id.pass_edit);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.login_coordinator);
@@ -103,7 +103,7 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
             case R.id.remind_pass:
                 remindPass();
                 break;
-            case R.id.login_btn:
+            case R.id.login_login_button:
                 signIn();
                 break;
         }
@@ -127,7 +127,8 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
         saveUserData(userModel);
         saveUserName(userModel);
 
-        Intent loginIntent = new Intent(this, MainActivity.class);
+        //Intent loginIntent = new Intent(this, MainActivity.class);
+        Intent loginIntent = new Intent(this, UserListActivity.class);
         loginIntent.putExtra(ConstantManager.USER_PHOTO_URL_KEY,
                 userModel.getData().getUser().getPublicInfo().getPhoto());
         loginIntent.putExtra(ConstantManager.USER_AVATAR_URL_KEY,
@@ -145,7 +146,6 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onResponse(Call<UserModelResponse> call, Response<UserModelResponse> response) {
                     if (response.code() == 200) {
-                        //doGotoMainActivity(response.body());
                         loginSuccess(response.body());
                     } else if (response.code() == 404) {
                         showSnackBar("Неверный логин или пароль");
