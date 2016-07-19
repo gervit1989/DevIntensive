@@ -31,7 +31,7 @@ public class UserDTO implements Parcelable {
         mFamily = userData.getSecondName();
         mRating = String.valueOf(userData.getProfileValues().getRating());
         mCodeLines = String.valueOf(userData.getProfileValues().getLinesCode());
-        mProjects = String.valueOf(userData.getProfileValues().getProjects());
+        mProjects = String.valueOf(userData.getProfileValues().getProjectCount());
         mBio = userData.getPublicInfo().getBio();
 
         for (UserModelResponse.Repo gitLink : userData.getRepositories().getRepo()) {
@@ -51,7 +51,7 @@ public class UserDTO implements Parcelable {
         mProjects = in.readString();
         mBio = in.readString();
         if (in.readByte() == 0x01) {
-            mRepositories = new ArrayList<String>();
+            mRepositories = new ArrayList<>();
             in.readList(mRepositories, String.class.getClassLoader());
         } else {
             mRepositories = null;

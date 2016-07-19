@@ -87,7 +87,7 @@ public class UserListActivity extends BaseActivity {
     }
 
     private void loadUsers() {
-        Call<UserListResponse> call = mDataManager.getUserList();
+        Call<UserListResponse> call = mDataManager.getUserListFromNetwork();
 
         call.enqueue(new Callback<UserListResponse>() {
             @Override

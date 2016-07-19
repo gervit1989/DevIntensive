@@ -87,7 +87,7 @@ public class UserModelResponse {
 
         @SerializedName("repo")
         @Expose
-        private List<Repo> repo = new ArrayList<Repo>();
+        private List<Repo> repo = new ArrayList<>();
         @SerializedName("updated")
         @Expose
         private String updated;
@@ -159,10 +159,6 @@ public class UserModelResponse {
         @SerializedName("updated")
         @Expose
         private String updated;
-
-        public int getProjects() {
-            return projects;
-        }
 
         public int getLinesCode() {
             return linesCode;

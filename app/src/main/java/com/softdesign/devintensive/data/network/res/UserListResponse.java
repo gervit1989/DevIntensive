@@ -13,7 +13,7 @@ public class UserListResponse {
 
     @SerializedName("data")
     @Expose
-    private List<UserData> data = new ArrayList<UserData>();
+    private List<UserData> data = new ArrayList<>();
 
     public List<UserData> getData() {
         return data;
@@ -24,6 +24,11 @@ public class UserListResponse {
         @SerializedName("_id")
         @Expose
         private String id;
+
+        public String getId() {
+            return id;
+        }
+
         @SerializedName("first_name")
         @Expose
         private String firstName;
