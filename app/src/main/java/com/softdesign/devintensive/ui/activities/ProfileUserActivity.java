@@ -49,6 +49,7 @@ public class ProfileUserActivity extends BaseActivity {
         mRepoListView = (ListView) findViewById(R.id.repository_list);
         setupToolBar();
         initProfileData();
+        mCollapsingToolBarLayout.setExpandedTitleColor(getResources().getColor(R.color.gray_light));
     }
 
     private void setupToolBar() {
@@ -58,18 +59,16 @@ public class ProfileUserActivity extends BaseActivity {
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("");
         }
     }
 
     private void initProfileData() {
        try {
-           //mCollapsingToolBarLayout.setExpandedTitleColor(getResources().getColor(Integer.parseInt("@android:color/transparent")));
-           mCollapsingToolBarLayout.setTitleEnabled(false);
-                   // mCollapsingToolBarLayout.setVisibility(View.GONE);
-                   //mCollapsingToolBarLayout.setTitle("");
+           //mCollapsingToolBarLayout.setTitleEnabled(false);
            UserDTO userDTO = getIntent().getParcelableExtra(ConstantManager.PARCELABLE_KEY);
 
-           mTextNameView.setText(userDTO.getName() + " "+userDTO.getFamily());
+           mTextNameView.setText(userDTO.getFullNameOfUser());
            final List<String> repositories = userDTO.getRepositories();
            final RepositoriesAdapter repositoriesAdapter = new RepositoriesAdapter(this, repositories);
            mRepoListView.setAdapter(repositoriesAdapter);

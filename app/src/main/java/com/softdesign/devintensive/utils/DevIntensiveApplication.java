@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.inspector.protocol.module.Database;
@@ -14,6 +15,7 @@ import com.softdesign.devintensive.data.storage.models.DaoSession;
  * Переопределение приложения
  */
 public class DevIntensiveApplication extends Application {
+    private static final String TAG = ConstantManager.TAG_PREFIX + "DevintensiveApp";
 
     /**
      * Доступ к пользовательским значениям
@@ -44,6 +46,7 @@ public class DevIntensiveApplication extends Application {
      */
     @Override
     public void onCreate() {
+        Log.d(TAG, "onCreate");
         super.onCreate();
         //- Получаем контекст
         sContext = getApplicationContext();

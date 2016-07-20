@@ -98,4 +98,5 @@ public interface ConstantManager {
 	
 	
     String PARCELABLE_KEY = "PARCELABLE_KEY";
+    long SEARCH_DELAY = 4000;
 }

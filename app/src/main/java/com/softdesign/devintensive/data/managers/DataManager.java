@@ -1,6 +1,7 @@
 package com.softdesign.devintensive.data.managers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.softdesign.devintensive.data.network.PicassoCache;
 import com.softdesign.devintensive.data.network.RestService;
@@ -11,6 +12,7 @@ import com.softdesign.devintensive.data.network.res.UserModelResponse;
 import com.softdesign.devintensive.data.storage.models.DaoSession;
 import com.softdesign.devintensive.data.storage.models.User;
 import com.softdesign.devintensive.data.storage.models.UserDao;
+import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.DevIntensiveApplication;
 import com.squareup.picasso.Picasso;
 
@@ -25,6 +27,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class DataManager {
+    private static final String TAG = ConstantManager.TAG_PREFIX + "DataManager";
 
     private Picasso mPicasso;
     private RestService mRestService;
@@ -175,6 +178,17 @@ public class DataManager {
      */
     public DaoSession getDaoSession() {
         return mDaoSession;
+    }
+
+    public List<User> getUserListByName(String query) {
+        Log.d(TAG,"getUserListByName");
+        List<User> userList=new ArrayList<>();
+        userList=mDaoSession.queryBuilder(User.class)
+        .where(UserDao.Properties.Rating.gt(0),UserDao.Properties.SearchName.like("%"+query.toUpperCase()+"%"))
+        .orderDesc(UserDao.Properties.Codelines)
+        .build()
+        .list();
+        return userList;
     }
 
     //endregion

@@ -12,8 +12,6 @@ import java.util.List;
 public class UserDTO implements Parcelable {
 
     private String mPhoto;
-    private String mName;
-    private String mFamily;
     private String mFullName;
     private String mRating;
     private String mCodeLines;
@@ -26,8 +24,6 @@ public class UserDTO implements Parcelable {
 
         mPhoto = userData.getPhoto();
         mFullName = userData.getFullName();
-        mName = userData.getName();
-        mFamily = userData.getFamily();
         mRating = String.valueOf(userData.getRating());
         mCodeLines = String.valueOf(userData.getCodelines());
         mProjects = String.valueOf(userData.getProjectCount());
@@ -43,8 +39,6 @@ public class UserDTO implements Parcelable {
     protected UserDTO(Parcel in) {
         mPhoto = in.readString();
         mFullName = in.readString();
-        mName = in.readString();
-        mFamily = in.readString();
         mRating = in.readString();
         mCodeLines = in.readString();
         mProjects = in.readString();
@@ -66,8 +60,6 @@ public class UserDTO implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mPhoto);
         dest.writeString(mFullName);
-        dest.writeString(mName);
-        dest.writeString(mFamily);
         dest.writeString(mRating);
         dest.writeString(mCodeLines);
         dest.writeString(mProjects);
@@ -97,16 +89,8 @@ public class UserDTO implements Parcelable {
         return mPhoto;
     }
 
-    public String getFullName() {
+    public String getFullNameOfUser() {
         return mFullName;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public String getFamily() {
-        return mFamily;
     }
 
     public String getRating() {

@@ -26,4 +26,9 @@
     <string name="hint_password">Пароль</string>
     <string name="text_login">ВОЙТИ</string>
     <string name="remind_pass">Забыли пароль?</string>
+    <string name="null_value">0</string>
+    <string name="text_code_line_count">Написано строк кода</string>
+    <string name="profile_name_string_">Фамилия Имя</string>
+    <string name="rating_string">Рейтинг</string>
+    <string name="project_string">Проектов</string>
 </resources>

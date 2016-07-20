@@ -39,18 +39,6 @@ public class User {
     @NotNull
     @Unique
     private String fullName;
-    /**
-     * Имя пользователя
-     */
-    @NotNull
-    @Unique
-    private String name;
-    /**
-     * Фамилия пользователя
-     */
-    @NotNull
-    @Unique
-    private String family;
 
 
     /**
@@ -263,31 +251,12 @@ public class User {
         this.projects = projects;
     }
 
-    public String getFamily() {
-        return this.family;
-    }
-
-    public void setFamily(String family) {
-        this.family = family;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Generated(hash = 583188955)
-    public User(Long id, @NotNull String remoteId, @NotNull String fullName, @NotNull String name,
-            @NotNull String family, String photo, @NotNull String searchName, String bio, int projects,
-            int rating, int codelines) {
+    @Generated(hash = 1077882734)
+    public User(Long id, @NotNull String remoteId, @NotNull String fullName, String photo,
+            @NotNull String searchName, String bio, int projects, int rating, int codelines) {
         this.id = id;
         this.remoteId = remoteId;
         this.fullName = fullName;
-        this.name = name;
-        this.family = family;
         this.photo = photo;
         this.searchName = searchName;
         this.bio = bio;

@@ -28,8 +28,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
    private List<User> mUsers;
    private UserViewHolder.CustomClickListener mCustomClickListener;
 
-    public UsersAdapter(List<User> mUsers, UserViewHolder.CustomClickListener customClickListener) {
-        this.mUsers = mUsers;
+    public UsersAdapter(List<User> users, UserViewHolder.CustomClickListener customClickListener) {
+        Log.d(TAG, "UsersAdapter");
+        this.mUsers = users;
         this.mCustomClickListener = customClickListener;
     }
 
@@ -107,6 +108,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private static final String TAG = ConstantManager.TAG_PREFIX + "UserViewHolder";
 
         protected AspectRatioImageView userPhoto;
         protected TextView mFullName, mRating, mCodeLines, mProjects, mBio;
@@ -117,6 +119,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
         public UserViewHolder(View itemView, CustomClickListener customClickListener) {
             super(itemView);
+            Log.d(TAG, "UserViewHolder");
             this.mListener = customClickListener;
 
             userPhoto = (AspectRatioImageView) itemView.findViewById(R.id.user_photo_img);
