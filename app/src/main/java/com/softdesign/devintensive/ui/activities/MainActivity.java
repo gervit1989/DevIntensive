@@ -451,6 +451,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public boolean onNavigationItemSelected(MenuItem item) {
                 showSnackBar(item.getTitle().toString());
                 item.setChecked(true);
+
+                if (item.getTitle().toString().equals("Команда")) {
+                    Intent loginIntent;
+                    loginIntent = new Intent(MainActivity.this, UserListActivity.class);
+                    startActivity(loginIntent);
+                }
+                item.setChecked(true);
                 mDrawer.closeDrawer(GravityCompat.START);
                 return false;
             }

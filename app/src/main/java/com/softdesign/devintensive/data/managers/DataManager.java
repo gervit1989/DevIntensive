@@ -13,6 +13,7 @@ import com.softdesign.devintensive.data.storage.models.DaoSession;
 import com.softdesign.devintensive.data.storage.models.User;
 import com.softdesign.devintensive.data.storage.models.UserDao;
 import com.softdesign.devintensive.utils.ConstantManager;
+import com.softdesign.devintensive.utils.CustomLoader;
 import com.softdesign.devintensive.utils.DevIntensiveApplication;
 import com.squareup.picasso.Picasso;
 
@@ -158,7 +159,7 @@ public class DataManager {
      * @return список пользователей из БД
      */
     public List<User> getUserListFromDb() {
-        List<User> userList = new ArrayList<>();
+        /*List<User> userList = new ArrayList<>();
         try{
             userList = mDaoSession.queryBuilder(User.class)
                     .where(UserDao.Properties.Codelines.ge(0))
@@ -170,7 +171,9 @@ public class DataManager {
             e.printStackTrace();
 
         }
-        return userList;
+        return userList;*/
+		CustomLoader customLoader=new CustomLoader(mContext);
+        return customLoader.loadInBackground();
     }
 
     /**

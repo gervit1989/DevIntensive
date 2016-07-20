@@ -1,5 +1,7 @@
 package com.softdesign.devintensive.ui.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,16 +23,17 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class ProfileUserActivity extends BaseActivity {
-
+    private static final String TAG = ConstantManager.TAG_PREFIX + "ProfileUserActivity";
     private Toolbar mToolBar;
     private ImageView mProfileImage;
     private EditText mUserBio;
     TextView mTextNameView;
     private TextView mUserRating, mUserCodeLines, mUserProjects;
-    private CollapsingToolbarLayout mCollapsingToolBarLayout;
-    private CoordinatorLayout mCoordinatorLayout;
-
     private ListView mRepoListView;
+    private CollapsingToolbarLayout mCollapsingToolBarLayout;
+	private CoordinatorLayout mCoordinatorLayout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,30 +75,24 @@ public class ProfileUserActivity extends BaseActivity {
            final List<String> repositories = userDTO.getRepositories();
            final RepositoriesAdapter repositoriesAdapter = new RepositoriesAdapter(this, repositories);
            mRepoListView.setAdapter(repositoriesAdapter);
-           /*mRepoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-               @Override
-               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                   // TODO: 15.07.2016 Реализовать просмотр репозитория по Intent.ACTION_VIEW
-               }
-           });*/
-          /* Picasso.with(this)
-                   .load(userDTO.getPhoto())
-                   .placeholder(R.drawable.user_bg)
-                   .error(R.drawable.user_bg)
-                   .into(mProfileImage);*/
+        mRepoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + repositories.get(position)));
+                startActivity(intent);
+            }
+        });
            mUserBio.setText(userDTO.getBio());
            mUserRating.setText(userDTO.getRating());
            mUserCodeLines.setText(userDTO.getCodeLines());
            mUserProjects.setText(userDTO.getProjects());
 
-
-           //showToast(userDTO.getFullName());
-           //mCollapsingToolBarLayout.setTitle(userDTO.getFullName());
-
            Picasso.with(this)
                    .load(userDTO.getPhoto())
                    .placeholder(R.drawable.user_bg)
                    .error(R.drawable.profile)
+    	            .fit()
+	                .centerCrop()
                    .into(mProfileImage);//*/
        }
        catch (NullPointerException e){

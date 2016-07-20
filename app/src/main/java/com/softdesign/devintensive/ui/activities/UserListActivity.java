@@ -4,19 +4,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
@@ -26,6 +31,7 @@ import com.softdesign.devintensive.data.storage.models.UserDTO;
 import com.softdesign.devintensive.ui.adapters.UsersAdapter;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.CustomLoader;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -33,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserListActivity extends AppCompatActivity {
+public class UserListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, LoaderManager.LoaderCallbacks<List<User>>{
 // implements LoaderManager.LoaderCallbacks<List<User>>
     private static final String TAG = ConstantManager.TAG_PREFIX + " UserListActivity";
     private CoordinatorLayout mCoordinatorLayout;
@@ -48,6 +54,7 @@ public class UserListActivity extends AppCompatActivity {
     private String mQuery;
     private Handler mHandler;
     private ImageView mCircularDrawerHeaderAvatar;
+    private TextView mUserEmailDrawerHeader;
     private Loader<List<User>> mLoader;
 
     @Override
@@ -67,9 +74,9 @@ public class UserListActivity extends AppCompatActivity {
 
         setupToolbar();
         setupDrawer();
-        loadUsersFromDb();
+        //loadUsersFromDb();
 		
-        //mLoader = getSupportLoaderManager().initLoader(1, new Bundle(), this);
+        mLoader = getSupportLoaderManager().initLoader(1, new Bundle(), this);
     }
 
     @Override
@@ -114,6 +121,23 @@ public class UserListActivity extends AppCompatActivity {
 
     private void setupDrawer() {
         // TODO: реализовтаь переход в другую активити при клике по элементу меню в Navigation Drawer
+        Log.d(TAG, "setupDrawer");
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigator);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                showSnackBar(item.getTitle().toString());
+
+                item.setChecked(true);
+                if (item.getTitle().toString().equals("Мой профиль")) {
+                    Intent loginIntent;
+                    loginIntent = new Intent(UserListActivity.this, MainActivity.class);
+                    startActivity(loginIntent);
+                }
+                mNavigationDrawer.closeDrawer(GravityCompat.START);
+                return false;
+            }
+        });
     }
 	private void showUsers(List<User> users) {
         Log.d(TAG, "showUsers");
@@ -148,7 +172,7 @@ public class UserListActivity extends AppCompatActivity {
     }
 
 
-    /*@Override
+    @Override
     public Loader<List<User>> onCreateLoader(int id, Bundle args) {
         Log.d(TAG, "onCreateLoader");
         return new CustomLoader(this);
@@ -164,7 +188,7 @@ public class UserListActivity extends AppCompatActivity {
     @Override
     public void onLoaderReset(Loader<List<User>> loader) {
         Log.d(TAG, "onLoaderReset");
-    }*/
+    }
 
     /**
      * Обработка нажатия кнопки "back". Убирает открытую NavigationDrawer
@@ -177,5 +201,27 @@ public class UserListActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        showUsersByQuery(newText);
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
+
+        return true;
     }
 }
