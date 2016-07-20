@@ -39,9 +39,15 @@ public class Repository {
      */
     private String userRemoteId;
 
+    /**
+     * Конструктор
+     * @param rep
+     * @param userId
+     */
     public Repository(UserModelResponse.Repo rep, String userId) {
         this.repositoryName = rep.getGit();
         this.userRemoteId = userId;
+        this.remoteId = rep.getId();
     }
 
     /**

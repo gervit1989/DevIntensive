@@ -24,11 +24,13 @@ import com.softdesign.devintensive.data.storage.models.User;
 import com.softdesign.devintensive.data.storage.models.UserDTO;
 import com.softdesign.devintensive.data.storage.models.UserDao;
 import com.softdesign.devintensive.ui.adapters.UsersAdapter;
+import com.softdesign.devintensive.utils.AppConfig;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.NetworkStatusChecker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -135,21 +137,28 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
         Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG).show();
     }
     private void loginSuccess(
-            UserModelResponse userModel) {
+            final UserModelResponse userModel) {
         showSnackBar(userModel.getData().getToken());
         mDataManager.getPreferencesManager().saveAuthToken(userModel.getData().getToken());
         mDataManager.getPreferencesManager().saveUserID(userModel.getData().getUser().getId());
         saveUserProfileValues(userModel);
         saveUserData(userModel);
         saveUserName(userModel);
+        saveUserDataInDb();
+        android.os.Handler handler = new android.os.Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Intent loginIntent = new Intent(this, MainActivity.class);
+                Intent loginIntent = new Intent(LoginActivity.this, UserListActivity.class);
+                loginIntent.putExtra(ConstantManager.USER_PHOTO_URL_KEY,
+                        userModel.getData().getUser().getPublicInfo().getPhoto());
+                loginIntent.putExtra(ConstantManager.USER_AVATAR_URL_KEY,
+                        userModel.getData().getUser().getPublicInfo().getAvatar());
+                startActivity(loginIntent);
+            }
+        }, AppConfig.START_DELAY);
 
-        //Intent loginIntent = new Intent(this, MainActivity.class);
-        Intent loginIntent = new Intent(this, UserListActivity.class);
-        loginIntent.putExtra(ConstantManager.USER_PHOTO_URL_KEY,
-                userModel.getData().getUser().getPublicInfo().getPhoto());
-        loginIntent.putExtra(ConstantManager.USER_AVATAR_URL_KEY,
-                userModel.getData().getUser().getPublicInfo().getAvatar());
-        startActivity(loginIntent);
     }
 
     private void signIn() {

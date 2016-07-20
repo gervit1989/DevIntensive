@@ -10,6 +10,7 @@ import com.softdesign.devintensive.data.network.res.UserListResponse;
 import com.softdesign.devintensive.data.network.res.UserModelResponse;
 import com.softdesign.devintensive.data.storage.models.DaoSession;
 import com.softdesign.devintensive.data.storage.models.User;
+import com.softdesign.devintensive.data.storage.models.UserDao;
 import com.softdesign.devintensive.utils.DevIntensiveApplication;
 import com.squareup.picasso.Picasso;
 
@@ -22,7 +23,6 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Part;
 
 public class DataManager {
 
@@ -155,8 +155,19 @@ public class DataManager {
      * @return список пользователей из БД
      */
     public List<User> getUserListFromDb() {
-        List<User> temp = new ArrayList<>();
-        return temp;
+        List<User> userList = new ArrayList<>();
+        try{
+            userList = mDaoSession.queryBuilder(User.class)
+                    .where(UserDao.Properties.Codelines.ge(0))
+                    .orderDesc(UserDao.Properties.Codelines)
+                    .build()
+                    .list();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return userList;
     }
 
     /**

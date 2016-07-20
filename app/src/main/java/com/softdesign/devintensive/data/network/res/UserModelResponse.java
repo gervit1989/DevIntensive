@@ -98,7 +98,6 @@ public class UserModelResponse {
     }
 
     public class Repo {
-
         @SerializedName("_id")
         @Expose
         private String id;
@@ -112,6 +111,11 @@ public class UserModelResponse {
         public String getGit() {
             return git;
         }
+
+        public String getId() {
+            return id;
+        }
+
     }
 
     public class PublicInfo {

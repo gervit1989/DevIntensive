@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
 import com.softdesign.devintensive.data.network.res.UserListResponse;
+import com.softdesign.devintensive.data.storage.models.User;
 import com.softdesign.devintensive.data.storage.models.UserDTO;
 import com.softdesign.devintensive.ui.adapters.UsersAdapter;
 import com.softdesign.devintensive.utils.ConstantManager;
@@ -36,7 +37,7 @@ public class UserListActivity extends BaseActivity {
 
     private DataManager mDataManager;
     private UsersAdapter mUsersAdapter;
-    private List<UserListResponse.UserData> mUsers;
+    private List<User> mUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class UserListActivity extends BaseActivity {
 
         setupToolbar();
         setupDrawer();
-        loadUsers();
+        loadUsersFromDb();
     }
 
     @Override
@@ -86,8 +87,27 @@ public class UserListActivity extends BaseActivity {
         // TODO: реализовтаь переход в другую активити при клике по элементу меню в Navigation Drawer
     }
 
-    private void loadUsers() {
-        Call<UserListResponse> call = mDataManager.getUserListFromNetwork();
+    /**
+     * Загрузка списка пользователей из БД
+     */
+    private void loadUsersFromDb() {
+        mUsers = mDataManager.getUserListFromDb();
+
+        mUsersAdapter = new UsersAdapter(mUsers, new UsersAdapter.UserViewHolder.CustomClickListener() {
+            @Override
+            public void onUserItemClickListener(int position) {
+
+                UserDTO userDTO = new UserDTO(mUsers.get(position));
+
+                Intent profileIntent = new Intent(UserListActivity.this, ProfileUserActivity.class);
+                profileIntent.putExtra(ConstantManager.PARCELABLE_KEY, userDTO);
+
+                startActivity(profileIntent);
+            }
+        });
+        mRecyclerView.setAdapter(mUsersAdapter);
+
+        /*Call<UserListResponse> call = mDataManager.getUserListFromNetwork();
 
         call.enqueue(new Callback<UserListResponse>() {
             @Override
@@ -118,6 +138,6 @@ public class UserListActivity extends BaseActivity {
             public void onFailure(Call<UserListResponse> call, Throwable t) {
 
             }
-        });
+        });*/
     }
 }
