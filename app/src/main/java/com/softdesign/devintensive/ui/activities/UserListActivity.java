@@ -1,7 +1,11 @@
 package com.softdesign.devintensive.ui.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -31,10 +35,15 @@ import com.softdesign.devintensive.data.storage.models.UserDTO;
 import com.softdesign.devintensive.ui.adapters.UsersAdapter;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.CustomLoader;
+import com.softdesign.devintensive.utils.RoundedAvatarDrawable;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,6 +65,7 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
     private ImageView mCircularDrawerHeaderAvatar;
     private TextView mUserEmailDrawerHeader;
     private Loader<List<User>> mLoader;
+    private ImageView user_avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +84,53 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
 
         setupToolbar();
         setupDrawer();
-        //loadUsersFromDb();
+        initAvatarImage();
+//        loadUsersFromDb();
 		
         mLoader = getSupportLoaderManager().initLoader(1, new Bundle(), this);
+    }
+
+    private void initAvatarImage() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        user_avatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
+        String photoURL = getIntent().getStringExtra(ConstantManager.USER_AVATAR_URL_KEY);
+        final Uri photoLocalUri = mDataManager.getPreferencesManager().loadUserAvatar();
+
+        Call<ResponseBody> call = mDataManager.getImage(photoURL);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    if (bitmap != null) {
+
+                        makeRoundAvatarFromBitmap(bitmap);
+                        try {
+                            File file = createImageFileFromBitmap("user_avatar", bitmap);
+                            if (file != null) {
+                                mDataManager.getPreferencesManager()
+                                        .saveUserAvatar(Uri.fromFile(file));
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                //showShackbar("Не удалось загрузить фотографию пользователя");
+            }
+        });
+    }
+
+    private void makeRoundAvatarFromBitmap(Bitmap btMap) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        user_avatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
+        RoundedAvatarDrawable bt = new RoundedAvatarDrawable(btMap);
+        user_avatar.setImageDrawable(bt);
     }
 
     @Override
@@ -122,7 +176,7 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
     private void setupDrawer() {
         // TODO: реализовтаь переход в другую активити при клике по элементу меню в Navigation Drawer
         Log.d(TAG, "setupDrawer");
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigator);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -134,6 +188,7 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
                     loginIntent = new Intent(UserListActivity.this, MainActivity.class);
                     startActivity(loginIntent);
                 }
+                initAvatarImage();
                 mNavigationDrawer.closeDrawer(GravityCompat.START);
                 return false;
             }
@@ -223,5 +278,21 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
         searchView.setOnQueryTextListener(this);
 
         return true;
+    }
+    private File createImageFileFromBitmap(String imageFileName, Bitmap bitmap) throws IOException {
+
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File imageFile = null;
+        try {
+            imageFile = new File(storageDir, imageFileName + ".jpg");
+
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imageFile;
     }
 }

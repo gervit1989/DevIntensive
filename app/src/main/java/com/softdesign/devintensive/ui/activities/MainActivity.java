@@ -449,6 +449,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+                initAvatarImage();
                 showSnackBar(item.getTitle().toString());
                 item.setChecked(true);
 

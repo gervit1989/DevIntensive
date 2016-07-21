@@ -159,7 +159,11 @@ public class DataManager {
      * @return список пользователей из БД
      */
     public List<User> getUserListFromDb() {
-        /*List<User> userList = new ArrayList<>();
+        if (ConstantManager.IS_LOADER){
+            CustomLoader customLoader=new CustomLoader(mContext);
+            return customLoader.loadInBackground();
+        }
+        List<User> userList = new ArrayList<>();
         try{
             userList = mDaoSession.queryBuilder(User.class)
                     .where(UserDao.Properties.Codelines.ge(0))
@@ -171,9 +175,8 @@ public class DataManager {
             e.printStackTrace();
 
         }
-        return userList;*/
-		CustomLoader customLoader=new CustomLoader(mContext);
-        return customLoader.loadInBackground();
+        return userList;
+		/**/
     }
 
     /**
