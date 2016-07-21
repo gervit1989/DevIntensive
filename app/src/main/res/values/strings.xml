@@ -32,4 +32,5 @@
     <string name="rating_string">Рейтинг</string>
     <string name="project_string">Проектов</string>
     <string name="hint_search">Поиск</string>
+    <string name="choose_browser">Выберите браузер</string>
 </resources>
