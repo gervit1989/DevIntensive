@@ -10,11 +10,14 @@ import com.softdesign.devintensive.data.network.req.UserLoginRequest;
 import com.softdesign.devintensive.data.network.res.UserListResponse;
 import com.softdesign.devintensive.data.network.res.UserModelResponse;
 import com.softdesign.devintensive.data.storage.models.DaoSession;
+import com.softdesign.devintensive.data.storage.models.MUserDao;
 import com.softdesign.devintensive.data.storage.models.User;
+import com.softdesign.devintensive.data.storage.models.MUser;
 import com.softdesign.devintensive.data.storage.models.UserDao;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.CustomLoader;
 import com.softdesign.devintensive.utils.DevIntensiveApplication;
+import com.softdesign.devintensive.utils.LocalUserLoader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -174,6 +177,24 @@ public class DataManager {
         catch (Exception e){
             e.printStackTrace();
 
+        }
+        return userList;
+		/**/
+    }
+    public List<MUser> getLocalUserListFromDb() {
+        if (ConstantManager.IS_LOADER){
+            LocalUserLoader customLoader=new LocalUserLoader(mContext);
+            return customLoader.loadInBackground();
+        }
+        List<MUser> userList = new ArrayList<>();
+        try {
+            userList = DevIntensiveApplication.getDaoSession().queryBuilder(MUser.class)
+                    .where(MUserDao.Properties.Codelines.gt(0))
+                    .orderDesc(MUserDao.Properties.Codelines)
+                    .build()
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return userList;
 		/**/

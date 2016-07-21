@@ -1,5 +1,6 @@
 package com.softdesign.devintensive.ui.activities;
 
+import android.graphics.drawable.Drawable;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -39,6 +40,7 @@ import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.RoundedAvatarDrawable;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -113,6 +115,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     //- Путь к изображению
     private Uri mSelectedImage = null;
+    private Drawable mDummy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -244,6 +247,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
+        showSnackBar("onStart");
     }
 
     @Override
@@ -258,6 +262,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+        initAvatarImage();
     }
 
     @Override
@@ -814,6 +819,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
     }
     private void initAvatarImage() {
+        showSnackBar("101");
+        Log.d(TAG, "onResume1");
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigator);
         user_avatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
         String photoURL = getIntent().getStringExtra(ConstantManager.USER_AVATAR_URL_KEY);
@@ -826,7 +833,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (response.isSuccessful()) {
                     Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                     if (bitmap != null) {
-
+                        Log.d(TAG, "onResume2");
                         makeRoundAvatarFromBitmap(bitmap);
                         try {
                             File file = createImageFileFromBitmap("user_avatar", bitmap);
@@ -839,12 +846,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         }
 
                     }
+                    else {
+                        Log.d(TAG, "onResume3");
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 //showShackbar("Не удалось загрузить фотографию пользователя");
+                File file = new File(Environment.
+                        getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"user_avatar.jpg");
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                if (bitmap != null) {
+                    Log.d(TAG, "onResume2");
+                    makeRoundAvatarFromBitmap(bitmap);
+                }
             }
         });
     }

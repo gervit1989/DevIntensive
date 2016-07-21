@@ -3,6 +3,7 @@ package com.softdesign.devintensive.ui.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,12 +31,14 @@ import android.widget.TextView;
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
 import com.softdesign.devintensive.data.network.res.UserListResponse;
+import com.softdesign.devintensive.data.storage.models.MUser;
 import com.softdesign.devintensive.data.storage.models.User;
 import com.softdesign.devintensive.data.storage.models.UserDTO;
 import com.softdesign.devintensive.ui.adapters.UsersAdapter;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.CustomLoader;
 import com.softdesign.devintensive.utils.RoundedAvatarDrawable;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -59,13 +62,16 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
     private DataManager mDataManager;
     private UsersAdapter mUsersAdapter;
     private List<User> mUsers;
+    private List<MUser> mLocalUsers;
     private MenuItem mSearchItem;
     private String mQuery;
     private Handler mHandler;
     private ImageView mCircularDrawerHeaderAvatar;
     private TextView mUserEmailDrawerHeader;
     private Loader<List<User>> mLoader;
+    private Loader<List<MUser>> mLocalLoader;
     private ImageView user_avatar;
+    private Drawable mDummy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +91,11 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
         setupToolbar();
         setupDrawer();
         initAvatarImage();
-//        loadUsersFromDb();
-		
-        mLoader = getSupportLoaderManager().initLoader(1, new Bundle(), this);
+        if (ConstantManager.IS_LOADER){
+            mLoader = getSupportLoaderManager().initLoader(1, new Bundle(), this);
+        }else {
+            loadUsersFromDb();
+        }
     }
 
     private void initAvatarImage() {
@@ -108,6 +116,7 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
                         try {
                             File file = createImageFileFromBitmap("user_avatar", bitmap);
                             if (file != null) {
+                                Log.d(TAG, "onResume25");
                                 mDataManager.getPreferencesManager()
                                         .saveUserAvatar(Uri.fromFile(file));
                             }
@@ -121,7 +130,16 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                //showShackbar("Не удалось загрузить фотографию пользователя");
+                mDummy = user_avatar.getContext().getResources().getDrawable(R.drawable.profile);
+                final String userPhoto = mDataManager.getPreferencesManager().loadUserAvatar().toString();
+                File file = new File(Environment.
+                        getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"user_avatar.jpg");
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                Log.d(TAG, userPhoto);
+                if (bitmap != null) {
+                    Log.d(TAG, "onResume2");
+                    makeRoundAvatarFromBitmap(bitmap);
+                }
             }
         });
     }
@@ -159,6 +177,14 @@ public class UserListActivity extends AppCompatActivity implements SearchView.On
             showUsers(mDataManager.getUserListFromDb());
         }
 	}
+    private void loadLocalUsersFromDb() {
+        Log.d(TAG, "loadLocalUsersFromDb");
+        if (mDataManager.getLocalUserListFromDb().size() == 0) {
+            showSnackBar("Список пользователей не может быть загружен");
+        } else {
+            mLocalUsers = mDataManager.getLocalUserListFromDb();
+        }
+    }
 
     private void setupToolbar() {
         Log.d(TAG, "setupToolbar");
