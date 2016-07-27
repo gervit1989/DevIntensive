@@ -1,16 +1,16 @@
 package com.softdesign.devintensive.data.network;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.softdesign.devintensive.data.network.interceptors.HeaderInterceptor;
 import com.softdesign.devintensive.utils.AppConfig;
+import com.softdesign.devintensive.utils.DevIntensiveApplication;
 
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by mvideo on 12.07.2016.
- */
 public class ServiceGenerator {
 
     public static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -24,6 +24,8 @@ public class ServiceGenerator {
 
         httpClient.addInterceptor(new HeaderInterceptor()); // добавление заголовков (токен, id-пользователя, User Agent)
         httpClient.addInterceptor(logging);
+        httpClient.cache(new Cache(DevIntensiveApplication.getContext().getCacheDir(), Integer.MAX_VALUE));
+        httpClient.addNetworkInterceptor(new StethoInterceptor()).build();
         Retrofit retrofit = sBuilder.client(httpClient.build()).build();
         return retrofit.create(serviceClass);
 

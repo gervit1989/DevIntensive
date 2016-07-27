@@ -12,6 +12,7 @@
         android:id="@+id/user_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:src="@drawable/profile"
         android:layout_marginTop="@dimen/spacing_normal_16"
         />
     <LinearLayout

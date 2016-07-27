@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,20 +16,25 @@ import android.widget.TextView;
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
 import com.softdesign.devintensive.data.network.req.UserLoginRequest;
+import com.softdesign.devintensive.data.network.res.UserListResponse;
 import com.softdesign.devintensive.data.network.res.UserModelResponse;
+import com.softdesign.devintensive.data.storage.models.Repository;
+import com.softdesign.devintensive.data.storage.models.RepositoryDao;
+import com.softdesign.devintensive.data.storage.models.User;
+import com.softdesign.devintensive.data.storage.models.UserDTO;
+import com.softdesign.devintensive.data.storage.models.UserDao;
+import com.softdesign.devintensive.ui.adapters.UsersAdapter;
+import com.softdesign.devintensive.utils.AppConfig;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.NetworkStatusChecker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-/**
- * Created by mvideo on 09.07.2016.
- */
 
 /**
  * Экран авторизации
@@ -60,9 +66,17 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
      * Пользовательские настройки
      */
     private DataManager mDataManager;
+
+    private RepositoryDao mRepositoryDao;
+
+    private UserDao mUserDao;
+
+    //- Тег отслеживания
+    private static final String TAG = ConstantManager.TAG_PREFIX + "LoginActivity";
+
     /**
      * На создание активити
-     * @param savedInstanceState
+     * @param savedInstanceState - сохраненное состояние
      */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +90,11 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
          */
         mDataManager = DataManager.getINSTANCE();
 
-        //- Инициалзация кнопки
+        mUserDao = mDataManager.getDaoSession().getUserDao();
+
+        mRepositoryDao = mDataManager.getDaoSession().getRepositoryDao();
+
+        //- Инициализация кнопки
         mButtonLogin = (Button)findViewById(R.id.login_login_button);
         mLoginEdit = (EditText) findViewById(R.id.login_edit);
         mPassEdit = (EditText)findViewById(R.id.pass_edit);
@@ -119,21 +137,28 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
         Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG).show();
     }
     private void loginSuccess(
-            UserModelResponse userModel) {
+            final UserModelResponse userModel) {
         showSnackBar(userModel.getData().getToken());
         mDataManager.getPreferencesManager().saveAuthToken(userModel.getData().getToken());
         mDataManager.getPreferencesManager().saveUserID(userModel.getData().getUser().getId());
         saveUserProfileValues(userModel);
         saveUserData(userModel);
         saveUserName(userModel);
+        saveUserDataInDb();
+        android.os.Handler handler = new android.os.Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Intent loginIntent = new Intent(this, MainActivity.class);
+                Intent loginIntent = new Intent(LoginActivity.this, UserListActivity.class);
+                loginIntent.putExtra(ConstantManager.USER_PHOTO_URL_KEY,
+                        userModel.getData().getUser().getPublicInfo().getPhoto());
+                loginIntent.putExtra(ConstantManager.USER_AVATAR_URL_KEY,
+                        userModel.getData().getUser().getPublicInfo().getAvatar());
+                startActivity(loginIntent);
+            }
+        }, AppConfig.START_DELAY);
 
-        //Intent loginIntent = new Intent(this, MainActivity.class);
-        Intent loginIntent = new Intent(this, UserListActivity.class);
-        loginIntent.putExtra(ConstantManager.USER_PHOTO_URL_KEY,
-                userModel.getData().getUser().getPublicInfo().getPhoto());
-        loginIntent.putExtra(ConstantManager.USER_AVATAR_URL_KEY,
-                userModel.getData().getUser().getPublicInfo().getAvatar());
-        startActivity(loginIntent);
     }
 
     private void signIn() {
@@ -205,4 +230,65 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
         mDataManager.getPreferencesManager().saveUserName(userNames);
     }
 
+
+    /**
+     * Сохранение данных в БД
+     */
+    private void saveUserDataInDb(){
+
+        Call<UserListResponse> call = mDataManager.getUserListFromNetwork();
+
+        call.enqueue(new Callback<UserListResponse>() {
+            @Override
+            public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
+
+                try {
+                    if(response.code()==200){
+                        //- Список репозиториев
+                        List<Repository> allRepositories = new ArrayList<>();
+
+                        //- Список пользователей
+                        List<User> allUsers = new ArrayList<>();
+
+                        for (UserListResponse.UserData userRes: response.body().getData()) {
+                            allRepositories.addAll(getRepoListFromUserRes(userRes));
+                            allUsers.add(new User(userRes));
+                        }
+                        mRepositoryDao.insertOrReplaceInTx(allRepositories);
+                        mUserDao.insertOrReplaceInTx(allUsers);
+
+                    }
+                    else {
+                        showSnackBar("Список пользователей не может быть получен");
+                        Log.e(TAG,"onResponse: " + String.valueOf(response.errorBody().source()));
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                    showSnackBar("Something going wrong");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserListResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    /**
+     * Получить список репозиториев у одного пользователя
+     * @return
+     */
+    private List<Repository> getRepoListFromUserRes(UserListResponse.UserData userData){
+        //- Получаем id пользователя
+        final String userId = userData.getId();
+
+        //- Спислк репозиториев
+        List<Repository> repositories = new ArrayList<>();
+
+        for (UserModelResponse.Repo rep : userData.getRepositories().getRepo()) {
+            repositories.add(new Repository(rep, userId));
+        }
+        return repositories;
+    }
 }
